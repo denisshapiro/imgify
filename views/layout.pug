@@ -2,6 +2,35 @@ doctype html
 html
   head
     title= title
+    meta(charset='utf-8')
+    link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
-    block content
+    nav.navbar.navbar-expand-lg.navbar-dark.green-bg.fixed-top
+      a.navbar-brand(href="/") Home
+      div.collapse.navbar-collapse(id="searchbar")
+        form.form-inline.mx-auto(id="one")
+          input(type="search" placeholder="Sky, Sun, Clouds..." aria-label="Search")
+
+      ul.navbar-nav.ml-auto
+        if user
+          li.nav-item
+            a.nav-link(href='/upload-photo') Upload Image
+          li.nav-item
+            a.nav-link(href='/log-out') Log out
+          li.nav-item
+            a.nav-link.text-white(href='#', aria-disabled='true') #{user.username}
+        else
+          li.nav-item.mr-sm-2
+            a.btn.btn-outline-light(href='/log-in') Log in 
+          li.nav-item.my-2.my-sm-0
+            a.btn.btn-outline-light(href='/sign-up') Sign up
+    br
+
+    div
+      block content
+
+  script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous")
+  script(src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous")
+  script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous")
+  script(src="../javascripts/index.js")
