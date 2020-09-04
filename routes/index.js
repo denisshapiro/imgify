@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+const passport = require('passport');
 var multer  = require('multer')
 var aws = require('aws-sdk')
 const multerS3 = require('multer-s3');
@@ -31,13 +32,11 @@ const upload = multer({
 router.get('/', photoController.index);
 router.get('/photos', photoController.photo_list);
 
-//router.get('/sign-up', userController.userSignupGet);
-//router.post('/sign-up', userController.userSignupPost);
-//router.get('/log-in', userController.userLoginGet);
-/*
-router.post('/log-in', passport.authenticate('local', {
-  successRedirect: '/',
-  failureRedirect: '/log-in',
-}));
-*/
+router.get('/sign-up', userController.user_signup_get);
+router.post('/sign-up', userController.user_signup_post);
+router.get('/log-in', userController.user_login_get);
+router.post('/log-in', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/log-in'}));
+
+router.get("/log-out", userController.user_logout);
+
 module.exports = router;

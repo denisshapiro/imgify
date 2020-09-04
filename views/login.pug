@@ -1,0 +1,24 @@
+extends layout
+
+block content
+    .container.mt-5
+      .row.justify-content-md-center
+        .col-8.p-5
+            h1.text-center.text-muted Log in
+            br
+            div.shadow.p-3(style="border-radius: 20px;")
+                form(method='POST', action='')
+                    .form-group
+                        label(for='username') Username
+                        input.form-control(type='text', name='username', placeholder='Username', value=(undefined===user ? '' : user.username))
+                    .form-group
+                        label(for='password') Password
+                        input.form-control(type='password', name='password', placeholder='Password')
+                    .text-center
+                        button.btn.red-bg.text-light(type='submit') Log in
+                .row.mt-4
+                if errors
+                    for error in errors
+                        .alert.alert-info!= error.msg
+                .text-center.mt-4
+                    a.link(href='/sign-up') Don't have an account? Sign up

@@ -6,7 +6,7 @@ exports.index = function(req, res) {
 }
 
 exports.photo_list = function(req, res) {
-    res.render('photos', {title: "All Photos"})
+    res.render('photos', {title: "All Photos", user: req.user})
 }
 
 exports.photo_detail = function(req, res) {
