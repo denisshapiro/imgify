@@ -1,0 +1,34 @@
+extends layout
+
+block content
+   .container.mt-5.col-4
+        .row
+            .col
+                h2.text-center.mb-3.mt-5.text-muted Upload one or mutiple photos
+                .p-3.shadow
+                    form(method='POST', action='' enctype="multipart/form-data")
+                        
+                        div.form-group
+                          label(for='tags') Tags :
+                          input.form-control(type='text', name='tags', placeholder='Beach, Vacation, Outdoor...', value=(undefined===photo ? '' : "PLACE TAGS"))
+                          small.form-text.text-muted(id="image") These will be applied to all photos you are about to upload. You can choose to edit later
+
+                        div.form-inline
+                            label.switch.mr-1
+                                input(type="checkbox" name='public')
+                                span.slider.round
+                            label Public
+                        
+                        br
+                        
+
+                        div.form-group
+                          input.form-control-file(multiple type="file" aria-describedby="fileHelp" name="uploaded_images" enctype="multipart/form-data" value = "Choose Image")
+                          small.form-text.text-muted(id="image") select image(s)
+
+ 
+                        button.btn.btn-primary.text-center(type='submit') Upload
+                        if errors
+                            for error in errors
+                                .alert.alert-info.mt-4!= error.msg
+

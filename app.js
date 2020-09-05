@@ -10,6 +10,7 @@ const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
+const flash = require('express-flash');
 const User = require('./models/user');
 
 var indexRouter = require('./routes/index');
@@ -17,32 +18,27 @@ var usersRouter = require('./routes/users');
 
 //set up mongoose connection
 var mongoose = require('mongoose');
-var dev_db_url = process.env.MONGODB_URI
-var mongoDB = dev_db_url;
+var mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-passport.use(
-  new LocalStrategy((username, password, done) => {
-    User.findOne({ username: username }, (err, user) => {
-      if (err) { 
-        return done(err);
-      };
-      if (!user) {
-        return done(null, false, { msg: "Incorrect username" });
-      }
+const MongoStore = require('connect-mongo')(session);
+const connection = mongoose.createConnection(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+const sessionStore = new MongoStore({ mongooseConnection: connection, collection: 'sessions' });
+
+passport.use(new LocalStrategy((username, password, done) => {
+  User.findOne({ username }, (err, user) => {
+    if (err) { return done(err); };
+    if (!user) { return done(null, false, { message: 'Incorrect username' }); }
+    else {
       bcrypt.compare(password, user.password, (err, res) => {
-          if (res) {
-            return done(null, user)
-          } else {
-            return done(null, false, {msg: "Incorrect password"})
-          }
-        })
-      return done(null, user);
-    });
-  })
-);
+        if (res) { return done(null, user); }
+        else { return done(null, false, { message: 'Incorrect password' }) }
+      });
+    };
+  });
+}));
 
 passport.serializeUser(function(user, done) {
   done(null, user.id);
@@ -56,7 +52,14 @@ passport.deserializeUser(function(id, done) {
 
 var app = express();
 
-app.use(session({ cookie: { maxAge: 60000 }, secret: process.env.SECRET, resave: false, saveUninitialized: true }));
+app.use(session({
+  cookie: { maxAge: 60000 },
+  secret: process.env.SECRET,
+  resave: false,
+  saveUninitialized: true,
+  store: sessionStore,
+}));
+
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
@@ -65,6 +68,7 @@ app.use(express.urlencoded({ extended: false }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(flash());
 app.use(function(req, res, next) {
   res.locals.currentUser = req.user;
   next();

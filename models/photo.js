@@ -3,20 +3,26 @@ const moment = require('moment');
 
 const Schema = mongoose.Schema;
 
-const Photo = new Schema(
+const PhotoSchema = new Schema(
   {
     timestamp: { type: Date, default: Date.now(), required: true },
     user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     visiblePublically: {type: Boolean, default: false, required: true },
     image: {type: String, required: true},
-    labels: [{type:String, required:false}]
+    tags: [{type:String, required:false}]
   },
 );
 
-Photo
+PhotoSchema
   .virtual('formattedDate')
   .get(function () {
     return moment(this.timestamp).format('DD/MM/YYYY, h:mm a');
   });
 
-module.exports = mongoose.model('Photo', Photo);
+PhotoSchema
+.virtual('url')
+.get(function(){
+  return '/photo/' + this._id;
+});
+
+module.exports = mongoose.model('Photo', PhotoSchema);

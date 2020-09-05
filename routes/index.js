@@ -31,11 +31,13 @@ const upload = multer({
 
 router.get('/', photoController.index);
 router.get('/photos', photoController.photo_list);
+router.get('/photo/upload', photoController.photo_upload_get);
+router.post('/photo/upload', upload.array('uploaded_images', 10), photoController.photo_upload_post);
 
 router.get('/sign-up', userController.user_signup_get);
 router.post('/sign-up', userController.user_signup_post);
 router.get('/log-in', userController.user_login_get);
-router.post('/log-in', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/log-in'}));
+router.post('/log-in', passport.authenticate('local', { successRedirect: '/', failureRedirect: '/log-in', failureFlash: true,}));
 
 router.get("/log-out", userController.user_logout);
 

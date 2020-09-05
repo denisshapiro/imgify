@@ -4,8 +4,6 @@ const bcrypt = require('bcryptjs');
 var User = require('../models/user');
 var Photo = require('../models/photo');
 
-
-
 exports.user_signup_get = function (req, res) {
     res.render('signup', {title: "sign up", user: req.user})
 };
