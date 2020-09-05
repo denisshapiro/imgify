@@ -16,7 +16,7 @@ exports.photo_list = function(req, res) {
 }
 
 exports.photo_detail = function(req, res) {
-    res.send('photo detail')
+    res.render('photo_detail', {user:req.user});
 }
 
 exports.photo_upload_get = function(req, res) {
@@ -31,7 +31,6 @@ exports.photo_upload_post =  [
     validator.body('tags').escape(),
 
   (req, res, next) => {
-        console.log(req.body)
         const errors = validator.validationResult(req);
         if (!errors.isEmpty()) {
             res.render('upload', { title: 'Upload Photo', user:req.user, errors:errors.array() });
@@ -41,16 +40,18 @@ exports.photo_upload_post =  [
             res.redirect('/log-in')
             return;
         }
+        var tags = req.body.tags.split(",");
+        for (var i = 0; i < tags.length; i++) tags[i] = tags[i].trim().toLowerCase();
         for(var i = 0; i < req.files.length; ++i){
             var file_url = req.files[i].location;
             var public = false;
             if(req.body.public == 'on') { public = true; }
-            console.log("PUBLIC IS " + req.public)
+            console.log(req.body);
             var photo = new Photo({ 
                 user: req.user,
                 image: file_url,
                 visiblePublically: public,
-                tags: [req.body.tags]
+                tags: tags
                });
                 photo.save(function (err) {
                     if (err) { return next(err); }

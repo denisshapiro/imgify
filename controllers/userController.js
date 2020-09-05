@@ -4,7 +4,12 @@ const bcrypt = require('bcryptjs');
 var User = require('../models/user');
 var Photo = require('../models/photo');
 
-exports.user_detail = function(req, res){
+exports.user_detail = function(req, res, next){
+    if (!req.params.id.match(/^[0-9a-fA-F]{24}$/)) {
+      var err = new Error('Invalid User ID');
+      err.status = 404;
+      return next(err);
+    }
     async.parallel({
         public_photos: function(callback) {
             Photo.find({'user': req.params.id, 'visiblePublically': true})
@@ -24,10 +29,12 @@ exports.user_detail = function(req, res){
             err.status = 404;
             return next(err);
         }
-        if(req.user && req.user.id !== req.params.id){
+        console.log(req.user);
+        console.log(req.params.id);
+        if(!req.user || req.user.id !== req.params.id){
             res.render('user', { title: results.user.username + '\'s photos', public_photos: results.public_photos, user: req.user });
         }
-        else{
+        else if(req.user.id === req.params.id) {
             res.render('user', { title: 'your photos', public_photos: results.public_photos, private_photos: results.private_photos, user:req.user });
         }   
     });

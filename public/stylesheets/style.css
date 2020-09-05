@@ -1,6 +1,6 @@
 body {
   padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  font: 14px "Open Sans", Helvetica, Arial, sans-serif;
 }
 
 a {
@@ -31,7 +31,7 @@ input[type=search] {
 	background: #fff url("/images/search-icon.png") no-repeat 9px center;
 	border: solid 1px white;
 	padding: 9px 10px 9px 32px;
-	width: 130px;
+	width: 180px;
 	
 	-webkit-border-radius: 10em;
 	-moz-border-radius: 10em;
@@ -43,7 +43,7 @@ input[type=search] {
 }
 
 input[type=search]:focus {
-	width: 300px;
+	width: 330px;
 	background-color: #fff;
 	border-color: pink;
 	
@@ -64,70 +64,8 @@ input::-webkit-input-placeholder {
   -webkit-box-shadow: 13px 10px 56px -29px rgba(0,0,0,0.75);
   -moz-box-shadow: 13px 10px 56px -29px rgba(0,0,0,0.75);
   box-shadow: 13px 10px 56px -29px rgba(0,0,0,0.75);
+  border-radius: 20px;
 }
-
-/* The switch - the box around the slider */
-.switch {
-	position: relative;
-	display: inline-block;
-	width: 30px;
-	height: 17px;
-  }
-  
-  /* Hide default HTML checkbox */
-  .switch input {
-	opacity: 0;
-	width: 0;
-	height: 0;
-  }
-  
-  /* The slider */
-  .slider {
-	position: absolute;
-	cursor: pointer;
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background-color: #ccc;
-	-webkit-transition: .4s;
-	transition: .4s;
-  }
-  
-  .slider:before {
-	position: absolute;
-	content: "";
-	height: 13px;
-	width: 13px;
-	left: 2px;
-	bottom: 2px;
-	background-color: white;
-	-webkit-transition: .4s;
-	transition: .4s;
-  }
-  
-  input:checked + .slider {
-	background-color: #2196F3;
-  }
-  
-  input:focus + .slider {
-	box-shadow: 0 0 1px #2196F3;
-  }
-  
-  input:checked + .slider:before {
-	-webkit-transform: translateX(13px);
-	-ms-transform: translateX(13px);
-	transform: translateX(13px);
-  }
-  
-  /* Rounded sliders */
-  .slider.round {
-	border-radius: 34px;
-  }
-  
-  .slider.round:before {
-	border-radius: 50%;
-  }
 
   .card{
 	width: 10rem;
@@ -136,7 +74,8 @@ input::-webkit-input-placeholder {
   .card-img-top {
     width: 100%;
     height: 10rem;
-    object-fit: cover;
+	object-fit: cover;
+	border-radius: 2%;
   }
 
   .card:hover{

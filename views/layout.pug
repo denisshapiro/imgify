@@ -4,19 +4,20 @@ html
     title= title
     meta(http-equiv="Content-Security-Policy" content="default-src * 'self' data:;")
     meta(charset='utf-8')
+    link(href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet")
     link(rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous")
     link(rel='stylesheet', href='/stylesheets/style.css')
   body
     nav.navbar.navbar-expand-lg.navbar-dark.red-bg.fixed-top
-      a.navbar-brand(href="/") Home
+      a.navbar-brand(href="/") imgify
       div.collapse.navbar-collapse(id="searchbar")
         form.form-inline.mx-auto(id="one")
-          input(type="search" placeholder="Sky, Sun, Clouds..." aria-label="Search")
+          input.tagbox(type="search" aria-label="Search")
 
       ul.navbar-nav.ml-auto
         if user
           li.nav-item
-            a.nav-link(href='/photo/upload') Upload Photo
+            a.nav-link(href='/upload') Upload Photo
           li.nav-item
             a.nav-link(href='/log-out') Log out
           li.nav-item
@@ -34,3 +35,5 @@ html
   script(src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous")
   script(src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous")
   script(src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous")
+  script(src="javascripts/typed.min.js")
+  script(src="javascripts/index.js")
