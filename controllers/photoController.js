@@ -8,7 +8,11 @@ exports.index = function(req, res) {
 }
 
 exports.photo_list = function(req, res) {
-    res.render('photos', {title: "All Photos", user: req.user})
+    Photo.find({'visiblePublically': true})
+    .exec(function (err, list_photos) {
+      if (err) { return next(err); }
+      res.render('photos', { title: 'All Photos', photos: list_photos, user: req.user });
+    });
 }
 
 exports.photo_detail = function(req, res) {

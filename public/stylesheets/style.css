@@ -128,3 +128,7 @@ input::-webkit-input-placeholder {
   .slider.round:before {
 	border-radius: 50%;
   }
+
+  #card{
+	width: 18rem;
+  }
