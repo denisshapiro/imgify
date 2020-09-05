@@ -20,7 +20,7 @@ html
           li.nav-item
             a.nav-link(href='/log-out') Log out
           li.nav-item
-            a.nav-link.text-white(href='#', aria-disabled='true') #{user.username}
+            a.nav-link.text-white(href=`user/${user.id}`, aria-disabled='false') #{user.username}
         else
           li.nav-item.mr-sm-2
             a.btn.btn-outline-light(href='/log-in') Log in 

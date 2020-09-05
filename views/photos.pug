@@ -3,7 +3,6 @@ extends layout
 block content
     div.row
         each photo in photos
-            div.card.mb-3.ml-3(id="card")
+            div.card.mb-3.ml-3
+              a(href="/photo/" + photo._id)
                 img.card-img-top(src= photo.image)
-                div.card-body.d-flex.flex-column
-                    a.btn.btn-outline-primary.stretched-link.mt-auto(href="/shoe/" + photo._id) See More

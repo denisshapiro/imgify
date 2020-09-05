@@ -4,6 +4,35 @@ const bcrypt = require('bcryptjs');
 var User = require('../models/user');
 var Photo = require('../models/photo');
 
+exports.user_detail = function(req, res){
+    async.parallel({
+        public_photos: function(callback) {
+            Photo.find({'user': req.params.id, 'visiblePublically': true})
+              .exec(callback);
+        },
+        user: function(callback) { 
+            User.findById(req.params.id).exec(callback);
+        },
+
+        private_photos: function(callback) {
+            Photo.find({'user': req.params.id, 'visiblePublically': false}).exec(callback);
+        },
+    }, function(err, results) {
+        if (err) { return next(err); }
+        if (results.user==null) {
+            var err = new Error('User not found');
+            err.status = 404;
+            return next(err);
+        }
+        if(req.user && req.user.id !== req.params.id){
+            res.render('user', { title: results.user.username + '\'s photos', public_photos: results.public_photos, user: req.user });
+        }
+        else{
+            res.render('user', { title: 'your photos', public_photos: results.public_photos, private_photos: results.private_photos, user:req.user });
+        }   
+    });
+}
+
 exports.user_signup_get = function (req, res) {
     res.render('signup', {title: "sign up", user: req.user})
 };

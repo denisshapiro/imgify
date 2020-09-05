@@ -1,0 +1,27 @@
+extends layout
+
+block content
+    h1.text-muted= title
+
+    if private_photos 
+        if private_photos.length > 0
+            h3.mb-3= "Private Photos"
+            div.row
+                each private_photo in private_photos
+                    div.card.mb-3.ml-3
+                        a(href="/photo/" + private_photo._id)
+                            img.card-img-top(src= private_photo.image)
+
+            hr
+    if public_photos
+        if public_photos.length > 0
+            h3.mb-3= "Public Photos"
+            div.row
+                each public_photo in public_photos
+                    div.card.mb-3.ml-3
+                        a(href="/photo/" + public_photo._id)
+                            img.card-img-top(src= public_photo.image)
+
+    if private_photos && private_photos.length == 0 && public_photos.length == 0
+        h6= "nothing to show :("
+        

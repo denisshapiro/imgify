@@ -56,8 +56,7 @@ exports.photo_upload_post =  [
                     if (err) { return next(err); }
                 });
             } 
-        res.redirect('/')
-       // res.redirect(req.user.url);
+        res.redirect(req.user.url);
     }
 ];
 
