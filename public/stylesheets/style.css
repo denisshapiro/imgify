@@ -121,7 +121,7 @@ input::-webkit-input-placeholder {
 	border: 2px solid rgb(21, 168, 21);
 	color: white;
 	background-color: rgb(21, 168, 21);
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	border-radius: 7px;
   }
   
@@ -143,3 +143,15 @@ input::-webkit-input-placeholder {
 	right:1em;
   }
 
+  #toastDiv{
+	position: absolute;
+	top: 5em;
+	right:1em;
+	width: 200px;
+  }
+
+.toast{
+	position: absolute; 
+	top: 0; 
+	right: 0;
+}

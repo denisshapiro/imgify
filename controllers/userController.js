@@ -33,7 +33,9 @@ exports.user_detail = function(req, res, next){
             res.render('user', { title: results.user.username + '\'s photos', public_photos: results.public_photos, user: req.user });
         }
         else if(req.user.id === req.params.id) {
-            res.render('user', { title: 'your photos', public_photos: results.public_photos, private_photos: results.private_photos, user:req.user });
+            uploaded = req.session.uploaded;
+            req.session.uploaded = null;
+            res.render('user', { title: 'your photos', public_photos: results.public_photos, private_photos: results.private_photos, user:req.user, just_uploaded: uploaded });
         }   
     });
 }

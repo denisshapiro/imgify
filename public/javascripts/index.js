@@ -20,3 +20,8 @@ var searchbox = new Typed('.tagbox', {
     bindInputFocusEvents: false,
     loop: true
   });
+
+$(document).ready(function(){
+    $('.toast').toast('show');
+});
+

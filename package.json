@@ -11,6 +11,7 @@
     "serverstart": "DEBUG=Inventory:* npm run devstart"
   },
   "dependencies": {
+    "@google-cloud/vision": "^2.1.1",
     "async": "^3.2.0",
     "aws-sdk": "^2.746.0",
     "bcryptjs": "^2.4.3",

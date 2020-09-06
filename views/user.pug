@@ -1,8 +1,15 @@
 extends layout
 
 block content
-    h1.text-muted= title
+    if just_uploaded
+        div(aria-live="polite" aria-atomic="true" id="toastDiv")
+            div.toast(role="alert" aria-live="assertive" aria-atomic="true" data-delay="4000")
+                div.toast-header
+                    strong.mr-auto Generating Tags
+                div.toast-body Refresh to see your image
 
+    h1.text-muted= title
+    
     if private_photos 
         if private_photos.length > 0
             h3.mb-3= "Private Photos"

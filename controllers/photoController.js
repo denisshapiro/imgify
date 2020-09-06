@@ -2,6 +2,7 @@ const validator = require('express-validator');
 var async = require('async');
 var User = require('../models/user');
 var Photo = require('../models/photo');
+const vision = require('@google-cloud/vision');
 
 exports.index = function(req, res) {
     res.redirect('/photos');
@@ -147,16 +148,9 @@ exports.photo_upload_post =  [
             var file_url = req.files[i].location;
             var public = false;
             if(req.body.public == 'on') { public = true; }
-            var photo = new Photo({ 
-                user: req.user,
-                image: file_url,
-                visiblePublically: public,
-                tags: tags
-               });
-                photo.save(function (err) {
-                    if (err) { return next(err); }
-                });
+            genTags(file_url, tags, public, req.user);
             } 
+        req.session['uploaded'] = true;
         res.redirect(req.user.url);
     }
 ];
@@ -217,6 +211,23 @@ exports.photo_update = function(req, res, next) {
     });
 }
 
-exports.photo_search_get = function(req, res) {
-    res.send('photo detail')
-}
+async function genTags(file_url, tags, public, user) {
+    const client = new vision.ImageAnnotatorClient();
+  
+    const [result] = await client.labelDetection(file_url);
+    
+    const labels = result.labelAnnotations;
+    generated_tags = []
+    labels.forEach(label => generated_tags.push(label.description.toLowerCase()));
+
+    tags = tags.concat(generated_tags);
+    var photo = new Photo({ 
+        user: user,
+        image: file_url,
+        visiblePublically: public,
+        tags: tags
+        });
+        photo.save(function (err) {
+            if (err) { return next(err); }
+        });
+  }
