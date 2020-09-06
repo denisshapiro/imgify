@@ -1,0 +1,57 @@
+extends layout
+
+block content
+    div.container
+        div.row.justify-content-center.align-items-center
+            div.col-sm-6.text-right
+                img.img-fluid(id="displayimage" src= photo.image name="image")
+            div.col-sm-6.pl-0
+                h4 uploaded by #[a(href=photo_user.url) #{photo_user.username}]
+                h6= photo.formattedTime
+        
+        if !edit
+            div.form-group.row.justify-content-center.align-items-center.text-center.mb-0.pb-0
+                    ul.photoUL
+                        each tag in photo.tags
+                            li.photoLI
+                                input.taglabel(type="checkbox" name="tag_update" id=tag value=tag disabled)
+                                label.tags(for=tag) #{tag}
+
+        if edit
+            form(method='POST', action='')
+                div.form-group.row.justify-content-center.align-items-center.text-center.mb-0.pb-0
+                    ul.photoUL
+                        each tag in photo.tags
+                            li.photoLI
+                                input.taglabel(type="checkbox" name="tag_update" id=tag value=tag)
+                                label.tags(for=tag) #{tag}
+                if photo.tags.length > 0
+                    small.form-text.text-muted.text-center(id="image") Select tags you'd like to discard
+                    br
+                div.form-group.row.justify-content-center.align-items-center.text-center
+                    input.form-control.w-50(type='text', name='tags' placeholder="add new tags")
+
+                if photo.visiblePublically
+                    div.form-inline.row.justify-content-center.align-items-center.text-center
+                        div.custom-control.custom-switch
+                            input.custom-control-input(type="checkbox" name="public" id="public" checked)
+                            label.custom-control-label(for="public") Public
+                else
+                    div.form-inline.row.justify-content-center.align-items-center.text-center
+                        div.custom-control.custom-switch
+                            input.custom-control-input(type="checkbox" name="public" id="public")
+                            label.custom-control-label(for="public") Public
+
+                br
+                div.row.justify-content-center.align-items-center.text-center.mb-0.pb-0
+                    button.btn.btn-primary.text-center(type='submit') Update
+
+            div(id="deleteBtn")
+                form(action=photo.url+'/delete/' method='POST')
+                    button.btn.btn-outline-danger(type='submit') Delete
+                
+                        
+               
+            
+            
+            

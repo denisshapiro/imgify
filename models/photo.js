@@ -16,7 +16,13 @@ const PhotoSchema = new Schema(
 PhotoSchema
   .virtual('formattedDate')
   .get(function () {
-    return moment(this.timestamp).format('DD/MM/YYYY, h:mm a');
+    return moment(this.timestamp).format('MMM Do YY');
+  });
+
+PhotoSchema
+  .virtual('formattedTime')
+  .get(function () {
+    return moment(this.timestamp).calendar();
   });
 
 PhotoSchema

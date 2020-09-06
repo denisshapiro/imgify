@@ -29,8 +29,6 @@ exports.user_detail = function(req, res, next){
             err.status = 404;
             return next(err);
         }
-        console.log(req.user);
-        console.log(req.params.id);
         if(!req.user || req.user.id !== req.params.id){
             res.render('user', { title: results.user.username + '\'s photos', public_photos: results.public_photos, user: req.user });
         }

@@ -45,11 +45,7 @@ input[type=search] {
 input[type=search]:focus {
 	width: 330px;
 	background-color: #fff;
-	border-color: pink;
-	
-	-webkit-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	-moz-box-shadow: 0 0 5px rgba(109,207,246,.5);
-	box-shadow: 0 0 5px rgba(109,207,246,.5);
+	border-color: white;
 }
 
 
@@ -91,3 +87,59 @@ input::-webkit-input-placeholder {
   img{
 	object-fit: cover;
   }
+
+  #displayimage{
+	width: 400px; 
+	height: 400px;
+	object-fit: contain;
+  }
+
+  .photoUL {
+	padding: 0;
+	margin: 0;
+	clear: both;
+  }
+  
+  .photoLI{
+	list-style-type: none;
+	list-style-position: outside;
+	padding: 10px;
+	float: left;
+  }
+  
+
+  input[name="tag_update"]:not(:checked), 
+  input[name="tag_update"]:checked {
+	position: absolute;
+	left: -9999%;
+  }
+  
+  input[name="tag_update"] + label {
+	display: inline-block;
+	padding: 10px;
+	cursor: pointer;
+	border: 2px solid rgb(21, 168, 21);
+	color: white;
+	background-color: rgb(21, 168, 21);
+	margin-bottom: 10px;
+	border-radius: 7px;
+  }
+  
+  input[name="tag_update"]:checked + label {
+	border: 2px solid rgb(21, 168, 21);
+	border-radius: 7px;
+	color: grey;
+	background-color: white;
+  }
+
+  .tags:hover{
+	background-color: rgb(24, 207, 24);
+	border: 2px solid rgb(24, 207, 24);
+  }
+
+  #deleteBtn{
+	position: absolute; 
+	bottom: 1em;
+	right:1em;
+  }
+

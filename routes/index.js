@@ -32,6 +32,9 @@ const upload = multer({
 router.get('/', photoController.index);
 router.get('/photos', photoController.photo_list);
 router.get('/upload', photoController.photo_upload_get);
+router.get('/photo/:id', photoController.photo_detail);
+router.post('/photo/:id', photoController.photo_update);
+router.post('/photo/:id/delete', photoController.photo_delete);
 router.post('/upload', upload.array('uploaded_images', 10), photoController.photo_upload_post);
 
 router.get('/sign-up', userController.user_signup_get);
