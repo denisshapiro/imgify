@@ -52,7 +52,7 @@ passport.deserializeUser(function(id, done) {
 var app = express();
 
 app.use(session({
-  cookie: { maxAge: 60000 },
+  cookie: { maxAge: 600000 },
   secret: process.env.SECRET,
   resave: false,
   saveUninitialized: true,

@@ -2,19 +2,73 @@ const validator = require('express-validator');
 var async = require('async');
 var User = require('../models/user');
 var Photo = require('../models/photo');
-const { populate } = require('../models/user');
-const photo = require('../models/photo');
 
 exports.index = function(req, res) {
     res.redirect('/photos');
 }
 
+function findCommonElement(arr1, arr2) { 
+    return arr1.some(item => arr2.includes(item)) 
+} 
+
 exports.photo_list = function(req, res) {
-    Photo.find({'visiblePublically': true})
-    .exec(function (err, list_photos) {
-      if (err) { return next(err); }
-      res.render('photos', { title: 'All Photos', photos: list_photos, user: req.user });
-    });
+    if(req.query.search){
+        var tags = [];
+        var tag_string = req.query.search;
+        if (tag_string.replace(/\s/g, '').length) {
+            tags = req.query.search.split(",");
+            for (var i = 0; i < tags.length; i++) tags[i] = tags[i].trim().toLowerCase();
+        }
+
+        if(req.user){
+            async.parallel({
+                public_photos: function(callback) {
+                    Photo.find({'visiblePublically': true})
+                      .exec(callback);
+                },
+                private_photos: function(callback) {
+                    Photo.find({'user': req.user.id, 'visiblePublically': false}).exec(callback);
+                },
+            }, function(err, results) {
+                if (err) { return next(err); }
+                var public = [];
+                var private = [];
+                for(var i = 0; i < results.public_photos.length; ++i){
+                    if(findCommonElement(results.public_photos[i].tags, tags)){
+                        public.push(results.public_photos[i]);
+                    }
+                }
+                for(var i = 0; i < results.private_photos.length; ++i){
+                    if(findCommonElement(results.private_photos[i].tags, tags)){
+                        private.push(results.private_photos[i]);
+                    }
+                }
+                res.render('search_results', {title: 'Search', public_photos: public, private_photos: private, user: req.user, tags: tags });
+                return
+            });
+        }
+        else{
+            Photo.find({'visiblePublically': true})
+                .exec(function(err, photos) {
+                if (err) { return next(err); }
+                var public_photos = [];
+                for(var i = 0; i < photos.length; ++i){
+                    if(findCommonElement(photos[i].tags, tags)){
+                        public_photos.push(photos[i]);
+                    }
+                }
+                res.render('search_results', {title: 'Search', public_photos: public_photos, user: req.user, tags: tags });
+                return
+            });
+        }
+    }
+    else{
+        Photo.find({'visiblePublically': true})
+            .exec(function (err, list_photos) {
+                if (err) { return next(err); }
+                res.render('photos', { title: 'All Photos', photos: list_photos, user: req.user });
+            });
+    }
 }
 
 exports.photo_detail = function(req, res, next) {
@@ -108,7 +162,7 @@ exports.photo_upload_post =  [
 ];
 
 exports.photo_delete = function(req, res, next) {
-    Photo.findById(req.params.id).exec(function(err, photo){
+    Photo.findById(req.params.id).exec(function(err, photo){ 
         if (err) { return next(err); }
         Photo.findByIdAndDelete(photo._id, function(err) {
             if (err) { return next(err); }

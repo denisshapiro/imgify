@@ -11,8 +11,8 @@ html
     nav.navbar.navbar-expand-lg.navbar-dark.red-bg.fixed-top
       a.navbar-brand(href="/") imgify
       div.collapse.navbar-collapse(id="searchbar")
-        form.form-inline.mx-auto(id="one")
-          input.tagbox(type="search" aria-label="Search")
+        form.form-inline.mx-auto(id="one" method='GET', action='/photos')
+          input.tagbox(type="search" aria-label="Search" name="search")
 
       ul.navbar-nav.ml-auto
         if user
