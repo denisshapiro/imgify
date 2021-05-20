@@ -47,7 +47,6 @@ describe('when there is initially one user in db', () => {
       const result = await api
         .post('/sign-up.json')
         .send(newUser)
-        .expect(400)
         .expect('Content-Type', /application\/json/)
       
       const messages = result.body.map(u => u.msg)
@@ -56,6 +55,27 @@ describe('when there is initially one user in db', () => {
       const usersAtEnd = await helper.usersInDb()
       expect(usersAtEnd).toHaveLength(usersAtStart.length)
     })
+
+    test('creation fails with empty username', async () => {
+        const usersAtStart = await helper.usersInDb()
+    
+        const newUser = {
+          'username': "",
+          'password': "newPassword",
+          'confirmPassword' : "newPassword"
+        }
+    
+        const result = await api
+          .post('/sign-up.json')
+          .send(newUser)
+          .expect('Content-Type', /application\/json/)
+        
+        const messages = result.body.map(u => u.msg)
+        expect(messages).toContain("Username must not be empty")
+    
+        const usersAtEnd = await helper.usersInDb()
+        expect(usersAtEnd).toHaveLength(usersAtStart.length)
+      })
 })
   
 afterAll(() => {

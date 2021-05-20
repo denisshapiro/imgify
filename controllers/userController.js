@@ -80,12 +80,9 @@ function user_signup_post(req, res, next, format) {
             switch(format){
               case 'html':
                 res.render('signup', { title: 'sign up', user: req.user, errors: errors.array() });
-                return next(err)
                 break
               case 'json':
                 res.json(errors.array())
-                return next(err)
-                break
               }
           } else {
             user.save((err, savedUser) => {

@@ -10,7 +10,7 @@ const User = require('../models/user')
 const helper = require('./test_helper')
 
 let userId
-let userObj //for mimicing populating user
+let userObj //for mimicking populating user
 
 beforeAll(async () => {
   await User.deleteMany({})
@@ -173,6 +173,53 @@ describe('when authentication is not present', () => {
     const photosAtEnd = await helper.photosInDb()      
     expect(photosAtEnd).toHaveLength(helper.initialPhotos.length)
   })
+
+  test('another users private photo cannot be viewed', async () => {
+    const user2 = {
+      "username" : "user2",
+      "password" : "testing",
+      "confirmPassword" : "testing"
+    }
+  
+    await api
+      .post("/sign-up.json")
+      .send(user2)
+      .set("Accept","application/json")
+      .expect('Content-Type', /application\/json/)
+
+    let loginUser = {
+      "username" : "user2",
+      "password": "testing"
+    }
+    
+    let res = await api
+      .post("/log-in")
+      .send(loginUser)
+
+    await api
+      .post('/upload')
+      .attach('uploaded_images', path.resolve(__dirname, 'test6.jpg'))
+      .set('cookie', res.headers['set-cookie'])
+    
+    res = await api
+      .post("/log-out")
+
+    const photos = await helper.photosInDb()
+    const photoToView = photos[3] //not visible publicly
+
+    loginUser = {
+      "username" : userObj.username,
+      "password": "testing"
+    }
+    
+    res = await api
+      .post("/log-in")
+      .send(loginUser)
+
+    await api
+      .get(`/photo.json/${photoToView.id}`)
+      .expect(404)
+   })
 })
 
 afterAll(() => {
