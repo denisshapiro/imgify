@@ -1,4 +1,5 @@
 require('dotenv').config()
+const config = require('./utils/config')
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -12,18 +13,20 @@ const bcrypt = require("bcryptjs");
 const flash = require('express-flash');
 const User = require('./models/user');
 
-var indexRouter = require('./routes/index');
+var indexRouter = require('./index');
 
 //set up mongoose connection
 var mongoose = require('mongoose');
 const { UnavailableForLegalReasons } = require('http-errors');
-var mongoDB = process.env.MONGODB_URI;
+const mongoDB = process.env.NODE_ENV === 'test' 
+  ? process.env.TEST_MONGODB_URI
+  : process.env.MONGODB_URI
 mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true});
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const MongoStore = require('connect-mongo')(session);
-const connection = mongoose.createConnection(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+const connection = mongoose.createConnection(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
 const sessionStore = new MongoStore({ mongooseConnection: connection, collection: 'sessions' });
 
 passport.use(new LocalStrategy((username, password, done) => {
